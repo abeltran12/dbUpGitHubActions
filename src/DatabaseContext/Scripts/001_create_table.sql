@@ -1,0 +1,9 @@
+CREATE TABLE Movies (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Title NVARCHAR(200) NOT NULL,
+    ReleaseDate DATETIME2 NOT NULL,
+    Rating DECIMAL(3,1),
+    CreatedAt DATETIME2 DEFAULT GETDATE()
+);
+
+CREATE INDEX IX_Movies_Title ON Movies(Title);
