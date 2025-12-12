@@ -3,7 +3,11 @@
 
 name: .NET
 
-on: [workflow_dispatch]
+on: 
+  workflow_dispatch:
+  push:
+    branches:
+      - main
 
 env:
   RESOURCE-GROUP: dbUpGitHubActions
@@ -33,7 +37,10 @@ jobs:
       run: dotnet test --no-build --verbosity normal
       
     - name: Publish
-      run: dotnet publish ./src/Api/Api.csproj -c Release -o ./publish
+      run: dotnet publish ./src/Api/Api.csproj -c Release -o ./publish/api
+
+    - name: Publish
+      run: dotnet publish ./src/DatabaseContext/DatabaseContext.csproj -c Release -o ./publish/console
 
     - name: Compress
       run: Compress-Archive -Path ./publish/* -DestinationPath app.zip
@@ -70,5 +77,5 @@ jobs:
             az webapp deploy \
               --name ${{ env.WEBAPP-NAME }} \
               --resource-group ${{ env.RESOURCE-GROUP }} \
-              --src-path webapp/app.zip \
+              --src-path webapp/app/api.zip \
               --type zip
