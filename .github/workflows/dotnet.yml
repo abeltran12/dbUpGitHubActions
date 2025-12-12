@@ -68,7 +68,7 @@ jobs:
         with:
           inlineScript: |
             az webapp deploy \
-              --name ${{ env.WEBAPP_NAME }} \
-              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --name ${{ env.WEBAPP-NAME }} \
+              --resource-group ${{ env.RESOURCE-GROUP }} \
               --src-path webapp/app.zip \
               --type zip
