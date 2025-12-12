@@ -42,15 +42,22 @@ jobs:
     - name: Publish
       run: dotnet publish ./src/DatabaseContext/DatabaseContext.csproj -c Release -o ./publish/console
 
+    - name: Create artifacts folder
+      run: mkdir artifacts
+
     - name: Compress
-      run: Compress-Archive -Path ./publish/* -DestinationPath app.zip
+      run: Compress-Archive -Path ./publish/api/* -DestinationPath ./artifacts/api.zip
+      shell: pwsh
+
+    - name: Compress
+      run: Compress-Archive -Path ./publish/console/* -DestinationPath ./artifacts/console.zip
       shell: pwsh
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: webapp
-        path: app.zip
+        path: artifacts
 
   # Publish Web app
   deploy:
