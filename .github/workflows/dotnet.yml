@@ -8,7 +8,7 @@ on: [workflow_dispatch]
 env:
   RESOURCE-GROUP: dbUpGitHubActions
   LOCATION: eastus
-  WEBAPP-NAME: eshoponweb-webapp-abeltrano
+  WEBAPP-NAME: dbUpGitHubActions
 
 jobs:
   #Build, test and publish .net web project in repository
