@@ -3,33 +3,72 @@
 
 name: .NET
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [workflow_dispatch]
+
+env:
+  RESOURCE-GROUP: dbUpGitHubActions
+  LOCATION: eastus
+  WEBAPP-NAME: eshoponweb-webapp-abeltrano
 
 jobs:
-  build:
-
+  #Build, test and publish .net web project in repository
+  buildandtest:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
+    #prepare runner for desired .net version SDK
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 10.0.x
+    #Build/Test/Publish the .net project
     - name: Restore dependencies
       run: dotnet restore
+      
     - name: Build
       run: dotnet build --no-restore
+      
     - name: Test
       run: dotnet test --no-build --verbosity normal
+      
     - name: Publish
-      run: dotnet publish src/Api/Api.csproj --configuration Release --output drop
+      run: dotnet publish ./src/Web/Web.csproj -c Release -o ./publish
+
+    - name: Compress
+      run: Compress-Archive -Path ./publish/* -DestinationPath app.zip
+      shell: pwsh
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
       with:
-        name: webapi
-        path: drop/
+        name: webapp
+        path: app.zip
+
+  # Publish Web app
+  deploy:
+    runs-on: ubuntu-latest
+    needs: buildandtest
+    steps:
+      - name: Download artifacts from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: webapp
+          path: webapp
+      
+      #Login in your azure subscription using a service principal
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+       # Publish website to Azure App Service using CLI (WebApp)
+      - name: Publish Website to WebApp
+        uses: Azure/cli@v2
+        with:
+          inlineScript: |
+            az webapp deploy \
+              --name ${{ env.WEBAPP_NAME }} \
+              --resource-group ${{ env.RESOURCE_GROUP }} \
+              --src-path webapp/app.zip \
+              --type zip
