@@ -4,7 +4,10 @@
 name: .NET
 
 on: 
-  workflow_dispatch
+  workflow_dispatch:
+  #push:
+  #  branches:
+  #    - main
 
 env:
   RESOURCE-GROUP: dbUpGitHubActions
@@ -71,7 +74,9 @@ jobs:
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
        # Publish website to Azure App Service using CLI (WebApp)
       - name: Publish Website to WebApp

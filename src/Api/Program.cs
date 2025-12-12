@@ -1,6 +1,8 @@
 using Api.Context;
 using Api.Models;
 using Dapper;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +51,11 @@ app.MapGet("/weatherforecast", () =>
     return forecast;
 })
 .WithName("GetWeatherForecast");
+
+app.MapGet("/putos", () =>
+{
+    return "eres un huevo";
+});
 
 app.Run();
 
