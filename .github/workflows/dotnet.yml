@@ -89,6 +89,6 @@ jobs:
 
       - name: Run Database Migrator
         run: |
-          unzip artifacts/console.zip -d migrator
+          unzip webapp/console.zip -d migrator
           cd migrator
-          dotnet DatabaseContext.dll "${{ secrets.CONNECTION_STRING }}"
+          dotnet DatabaseContext.dll "${{ secrets.DB_CONNECTION_STRING }}"
