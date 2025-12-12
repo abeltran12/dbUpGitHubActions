@@ -86,3 +86,9 @@ jobs:
               --resource-group ${{ env.RESOURCE-GROUP }} \
               --src-path webapp/api.zip \
               --type zip
+
+      - name: Run Database Migrator
+        run: |
+          unzip artifacts/console.zip -d migrator
+          cd migrator
+          dotnet DatabaseContext.dll "${{ secrets.CONNECTION_STRING }}"
