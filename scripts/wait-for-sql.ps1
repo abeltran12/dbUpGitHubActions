@@ -10,7 +10,7 @@ if (-not $env:DB_CONNECTION_STRING) {
 
 # Parsear connection string
 $builder = New-Object System.Data.SqlClient.SqlConnectionStringBuilder
-$builder.ConnectionString = $env:DB_CONNECTION_STRING
+$builder.set_ConnectionString = $env:DB_CONNECTION_STRING
 
 $server   = $builder.DataSource
 $database = $builder.InitialCatalog
