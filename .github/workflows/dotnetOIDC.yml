@@ -92,10 +92,10 @@ jobs:
               --src-path webapp/api.zip \
               --type zip
 
-      - name: Wait for Azure SQL
+      - name: Wait for SQL
         shell: pwsh
         env:
-          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+          SQL_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
         run: |
           ./scripts/wait-for-sql.ps1
 
