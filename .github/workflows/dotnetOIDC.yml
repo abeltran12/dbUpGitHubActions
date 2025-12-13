@@ -92,6 +92,13 @@ jobs:
               --src-path webapp/api.zip \
               --type zip
 
+      - name: Wait for Azure SQL
+        shell: pwsh
+        env:
+          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+        run: |
+          ./scripts/wait-for-sql.ps1
+
       - name: Run Database Migrator
         run: |
           unzip webapp/console.zip -d migrator
