@@ -1,6 +1,6 @@
 param (
     [int]$MaxAttempts = 5,
-    [int]$DelaySeconds = 20
+    [int]$DelaySeconds = 30
 )
 
 if (-not $env:DB_CONNECTION_STRING) {
