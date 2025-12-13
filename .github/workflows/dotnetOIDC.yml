@@ -96,7 +96,7 @@ jobs:
       - name: Wait for SQL
         shell: pwsh
         env:
-          SQL_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
+          DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING }}
         run: |
           pwsh ./scripts/wait-for-sql.ps1
 
